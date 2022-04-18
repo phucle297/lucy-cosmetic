@@ -1,48 +1,19 @@
+import dataCart from "../../data/cart.json" assert { type: "json" };
+
 const checkout = document.querySelector(".checkout");
 
-const dataCart = [
-  {
-    name: "Product 1",
-    price: "100",
-    image: "https://picsum.photos/200?random=1",
-    quantity: 1,
-  },
-  {
-    name: "Product 2",
-    price: "200",
-    image: "https://picsum.photos/200?random=2",
-    quantity: 2,
-  },
-  {
-    name: "Product 3",
-    price: "300",
-    image: "https://picsum.photos/200?random=3",
-    quantity: 1,
-  },
-  {
-    name: "Product 4",
-    price: "400",
-    image: "https://picsum.photos/200?random=4",
-    quantity: 3,
-  },
-  {
-    name: "Product 5",
-    price: "500",
-    image: "https://picsum.photos/200?random=5",
-    quantity: 1,
-  },
-  {
-    name: "Product 6",
-    price: "600",
-    image: "https://picsum.photos/200?random=6",
-    quantity: 1,
-  },
-];
+const formatedCart = dataCart.map((product) => {
+  const priceFormatted = parseInt(
+    product.price.replace(",", "").replace(".", "")
+  );
+  return { ...product, price: priceFormatted };
+});
 
 const renderCart = () => {
   let total = 0;
   let cart = "";
-  dataCart.forEach((product) => {
+
+  formatedCart.forEach((product) => {
     total += product.price * product.quantity;
     cart += `
       <tr>
@@ -57,7 +28,7 @@ const renderCart = () => {
           }" alt="" width = "50px" height = "50px" class = "rounded-circle"/>
         </td>
         <td>${product.name}</td>
-        <td>${product.price}</td>
+        <td>${product.price.toLocaleString()}</td>
         <td>
           <div class="input-group" style="width:150px">
             <div class="input-group-prepend">
@@ -81,7 +52,7 @@ const renderCart = () => {
             </div>
           </div>
         </td>
-        <td>${product.price * product.quantity}</td>
+        <td>${(product.price * product.quantity).toLocaleString()}</td>
         <td>
           <button class="btn btn-outline-danger">
             <i class="fas fa-trash-alt"></i>
@@ -94,14 +65,20 @@ const renderCart = () => {
 };
 
 const total = renderCart();
+const shippingFee = 30000;
+const coupon = 20000;
 
 const totalPrice = document.querySelector(".total-price");
-totalPrice.innerHTML = total;
+totalPrice.innerHTML = total.toLocaleString();
 const couponPrice = document.querySelector(".coupon-price");
-couponPrice.innerHTML = 20;
+couponPrice.innerHTML = coupon.toLocaleString();
 const shippingPrice = document.querySelector(".shipping-price");
-shippingPrice.innerHTML = 30;
+shippingPrice.innerHTML = shippingFee.toLocaleString();
 const totalPriceAfterCoupon = document.querySelector(
   ".total-price-after-coupon"
 );
-totalPriceAfterCoupon.innerHTML = total + 30 - 20;
+totalPriceAfterCoupon.innerHTML = (
+  total +
+  coupon -
+  shippingFee
+).toLocaleString();

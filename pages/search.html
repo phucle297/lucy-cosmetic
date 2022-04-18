@@ -365,6 +365,19 @@
       type="text/javascript"
       src="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"
     ></script>
-    <script src="../assets/js/search.js"></script>
+    <script>
+      const viewDetail = (id) => {
+        window.localStorage.setItem("productId", id);
+        window.location.replace("/pages/detail.html");
+      };
+
+      const handleSearch = () => {
+        const search = document.querySelector("#searchInput").value;
+
+        window.localStorage.setItem("searchValue", search);
+        window.location.replace("/pages/search.html");
+      };
+    </script>
+    <script src="../assets/js/search.js" type="module"></script>
   </body>
 </html>
